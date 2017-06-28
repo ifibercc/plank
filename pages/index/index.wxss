@@ -1,0 +1,19 @@
+/**index.wxss**/
+
+.cycle {
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  width: 500rpx;
+  height: 500rpx;
+  border: 1px solid #aaa;
+  border-radius: 50%;
+}
+
+.time {
+    font-size: 36px;
+}
+
+.btn-start {
+    margin-top: 200rpx;
+}

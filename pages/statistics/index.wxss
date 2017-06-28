@@ -1,0 +1,8 @@
+.tr {
+    display: flex;
+    flex-direction: clomus;
+    margin: 2rpx;
+}
+.td {
+    margin: 0 50rpx;
+}

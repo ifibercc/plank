@@ -1,0 +1,17 @@
+<view class="container">
+  <view class="table">
+    <view class="tr" wx:for="{{plankList}}" wx:key="{{index}}">
+      <view class="td">
+        {{index + 1}}
+      </view>
+      <view class="td">
+        {{item.date}}
+      </view>
+      <view class="td">
+        {{item.spend}}
+      </view>
+    </view>
+  </view>
+
+
+</view>

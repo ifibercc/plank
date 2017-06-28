@@ -1,0 +1,10 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="cycle">
+    <text class="time">{{timerMin}}:{{timerSec}}:{{timerMs}}</text>
+  </view>
+
+  <view class="btn-start">
+    <button type="{{actionType}}" bindtap="handleAction">{{actionText}}</button>
+  </view>
+</view>
