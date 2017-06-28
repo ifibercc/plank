@@ -2,7 +2,8 @@
 //获取应用实例
 var app = getApp()
 var page;
-var beginTime;
+var startTime;
+var endTime;
 Page({
     data: {
         time: '00:00:00',
@@ -23,7 +24,7 @@ Page({
                     actionType: 'warn',
                     actionText: 'Stop'
                 });
-                beginTime = new Date().getTime();
+                startTime = new Date().getTime();
                 this.data.tickInterval = setInterval(this.timerFunc.bind(this), 10)
                 break;
             case 'Stop':
@@ -32,12 +33,28 @@ Page({
                     actionText: 'Reset'
                 });
                 clearInterval(this.data.tickInterval);
-                var now = new Date().getTime() - beginTime;
-                // ajax 发送至服务器
-                console.log(now)
+                endTime = new Date().getTime();
+                var duration = new Date().getTime() - startTime;
+                wx.request({
+                    url: 'https://ifibercc.com/api/addHis',
+                    data: {
+                        record: {
+                            uId: app.globalData.userId,
+                            startTime,
+                            endTime,
+                            duration
+                        }
+                    },
+                    header: {
+                        'content-type': 'application/json'
+                    },
+                    success: function (res) {
+                        console.log(res)
+                    }
+                })
                 break;
             case 'Reset':
-                beginTime = new Date().getTime();
+                startTime = new Date().getTime();
                 this.setData({
                     actionType: 'primary',
                     actionText: 'Start',
@@ -51,7 +68,7 @@ Page({
         }
     },
     timerFunc: function () {
-        var interval = (new Date().getTime()) - beginTime;
+        var interval = (new Date().getTime()) - startTime;
         var min = Math.floor(interval / 1000 / 60);
         var sec = Math.floor((interval - min * 60 * 1000) / 1000);
         var ms = interval - min * 60 * 1000 - sec * 1000;

@@ -1,29 +1,41 @@
 //app.js
 App({
-  onLaunch: function() {
-    //调用API从本地缓存中获取数据
-    var logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-  },
-
-  getUserInfo: function(cb) {
-    var that = this
-    if (this.globalData.userInfo) {
-      typeof cb == "function" && cb(this.globalData.userInfo)
-    } else {
-      //调用登录接口
-      wx.getUserInfo({
-        withCredentials: false,
-        success: function(res) {
-          that.globalData.userInfo = res.userInfo
-          typeof cb == "function" && cb(that.globalData.userInfo)
+    onLaunch: function () {
+        this.getUserInfo();
+    },
+    getUserInfo: function () {
+        var that = this;
+        if (this.globalData.userInfo !== '') {
+        } else {
+            wx.login({
+                success: function () {
+                    wx.getUserInfo({
+                        withCredentials: false,
+                        success: function (res) {
+                            that.globalData.userInfo = res.userInfo;
+                            wx.request({
+                                url: 'https://ifibercc.com/api/user',
+                                data: {
+                                    userInfo: res.userInfo
+                                },
+                                header: {
+                                    'content-type': 'application/json'
+                                },
+                                success: function (res) {
+                                    // 处理异常
+                                    if (res.statusCode === 200) {
+                                        that.globalData.userId = res.data;
+                                    }
+                                }
+                            })
+                        }
+                    })
+                }
+            });
         }
-      })
+    },
+    globalData: {
+        userInfo: '',
+        userId: ''
     }
-  },
-
-  globalData: {
-    userInfo: null
-  }
 })
